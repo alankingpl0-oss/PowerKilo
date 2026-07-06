@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
 
     // 1. Główne okno
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "C-Binary Editor");
+    gtk_window_set_title(GTK_WINDOW(window), "PowerKilo v2rc1");
     gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -218,6 +218,23 @@ int main(int argc, char *argv[]) {
     // 6. Obszar tekstowy (Scrolled Window)
     text_view = gtk_text_view_new();
     gtk_text_view_set_left_margin(GTK_TEXT_VIEW(text_view), 5);
+
+   /*
+    * Magiczna funkcja ustawiająca czcionkę mono.
+    * Funkcja ta jest bardzo skomplikowana.
+    * Nie oczekuje się od Ciebie, że to zrozumiesz.
+    */
+    
+    PangoFontDescription *font_desc = pango_font_description_from_string("Monospace 10");
+    gtk_widget_override_font(text_view, font_desc);
+    pango_font_description_free(font_desc); /* Zwalniamy strukturę opisową, czcionka jest już przypisana */
+
+    /*
+     * Uf... udało się.
+     */
+    GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
+    gtk_container_add(GTK_CONTAINER(scroll), text_view);
+    
     GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
     gtk_container_add(GTK_CONTAINER(scroll), text_view);
     gtk_box_pack_start(GTK_BOX(vbox), scroll, TRUE, TRUE, 0);
