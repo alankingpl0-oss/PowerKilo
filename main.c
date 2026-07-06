@@ -5,6 +5,11 @@
 #include <dirent.h>
 #include <string.h>
 
+/*
+ * PowerKilo
+ * Wersja 2rc1
+ */
+
 typedef char* (*PluginFunc)(const char*);
 typedef char* (*InfoFunc)();
 
