@@ -10,8 +10,17 @@
  * Wersja 2rc1
  */
 
-typedef char* (*PluginFunc)(const char*);
+/* Struktura zawierająca kontekst aplikacji przekazywany do wtyczek */
+typedef struct {
+    GtkWidget *text_view;
+    GtkWidget *status_bar;
+    void (*set_status_func)(const char*);
+} PowerKiloAPI;
+
+/* Wtyczka teraz zwraca void, bo sama może zmodyfikować bufor, i przyjmuje wskaźnik na API */
+typedef void (*PluginFunc)(PowerKiloAPI*);
 typedef char* (*InfoFunc)();
+
 
 GtkWidget *text_view;
 GtkWidget *status_bar;
@@ -123,6 +132,7 @@ void show_plugin_help(GtkWidget *widget, gpointer data) {
     }
 }
 
+/* --- WYKONYWANIE WTYCZKI --- */
 // --- WYKONYWANIE WTYCZKI ---
 void execute_plugin(GtkWidget *widget, gpointer data) {
     void *handle = data;
@@ -133,18 +143,16 @@ void execute_plugin(GtkWidget *widget, gpointer data) {
         return;
     }
 
-    GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
-    GtkTextIter start, end;
-    gtk_text_buffer_get_bounds(buffer, &start, &end);
-    char *input_text = gtk_text_buffer_get_text(buffer, &start, &end, FALSE);
+    /* Przygotowujemy kontekst API dla wtyczki */
+    PowerKiloAPI api;
+    api.text_view = text_view;
+    api.status_bar = status_bar;
+    api.set_status_func = set_status;
 
-    char *result = run_plugin(input_text);
-    if (result) {
-        gtk_text_buffer_set_text(buffer, result, -1);
-        set_status("Wtyczka zakończyła pracę.");
-    }
-    g_free(input_text);
+    /* Przekazujemy pełną władzę do wtyczki */
+    run_plugin(&api);
 }
+
 
 // --- ŁADOWANIE WTYCZEK ---
 void load_plugins(GtkWidget *plugin_menu) {
@@ -238,8 +246,6 @@ int main(int argc, char *argv[]) {
      * Uf... udało się.
      */
     GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
-    gtk_container_add(GTK_CONTAINER(scroll), text_view);
-    
     gtk_container_add(GTK_CONTAINER(scroll), text_view);
     gtk_box_pack_start(GTK_BOX(vbox), scroll, TRUE, TRUE, 0);
 
