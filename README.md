@@ -4,6 +4,11 @@
   <img src="https://img.shields.io/badge/Pobierz-PowerKilo--blue?style=plastic&icon=github" width="200" alt="Pobierz">
 </a>
 
+## Uwaga!
+### Zobacz dodatkowe oficjalne wtyczki tutaj: <a href="https://github.com/alankingpl0-oss/powerkilo-wtyczki">
+  <img src="https://img.shields.io/badge/Pobierz-PowerKilo--blue?style=plastic&icon=github" width="200" alt="Pobierz">
+</a>
+
 ---
 
 <!--
