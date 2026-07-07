@@ -7,7 +7,7 @@
 
 /*
  * PowerKilo
- * Wersja 2rc1
+ * Wersja 2rc2
  */
 
 /* Struktura zawierająca kontekst aplikacji przekazywany do wtyczek */
@@ -195,7 +195,7 @@ int main(int argc, char *argv[]) {
 
     // 1. Główne okno
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "PowerKilo v2rc1");
+    gtk_window_set_title(GTK_WINDOW(window), "PowerKilo v2rc2");
     gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
